@@ -1,0 +1,21 @@
+
+
+python main.py --experiment MSSL/EXPERIMENTO_MSSL_VAL_SET --path_cslr '/home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace' --path_islr '/home/temporal2/mvazquez/Challenge/baseline/ISLR_workspace'
+
+
+cd /home/temporal2/mvazquez/Challenge/baseline/ISLR_workspace/preprocessing
+python preprocess_video_playlist.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/MSSL/MSSL_VAL_SET/video --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A1_preprocessing_videos --method CENTERED_CUT --resolution 512x512
+cd /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/src
+python preparate_elan_files.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/MSSL/MSSL_VAL_SET/eaf --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A1_preprocessing_videos --labels ../data/track1.txt
+cd /home/temporal2/mvazquez/Challenge/baseline/ISLR_workspace/preprocessing
+python generate_kps.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A1_preprocessing_videos --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A2_features/npy/kps
+python generate_features.py --folder /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A2_features/npy --type_kps C3_xyz --noframeslimit True
+cd /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/src
+python generate_Windows.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A2_features/npy --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B1_generate_windows --type_features joints_C3_xyz bones_C3_xyz  --window_size 10 --window_stride 1 
+python generate_ISLR_output.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B1_generate_windows --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B2_ISLR_output --type_features joints_C3_xyz bones_C3_xyz  --labels ../data/track1.txt --folder_models config/model/track1_preprocessed_train/track1_400 --batch_size 100 --device 0 --raw
+
+
+python generate_SignSpotting_output.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B2_ISLR_output --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B3_SignSpotting_output --type_features joints_C3_xyz bones_C3_xyz  --threshold 0.75 --min_margin_is_sign 4 --min_margin_is_same 3 --fps 25 --windows_size 10 --window_stride 1
+python filter_SignSpotting_output_ISLR.py --input_results /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B3_SignSpotting_output --input_features /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A2_features/npy --type_features joints_C3_xyz bones_C3_xyz  --labels ../data/track1.txt --threshold 0.8 --folder_models config/model/track1_preprocessed_train/track1_1000 --result_size_fixed 25 --use_context
+python generate_Evaluation.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/B3_SignSpotting_output --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/E1_evaluation_output --gt /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/MSSL/EXPERIMENTO_MSSL_VAL_SET/A1_preprocessing_videos --labels ../data/track1.txt --threshold_iou_min 0.2 --threshold_iou_max 0.8 --threshold_iou_step 0.05 --metric 
+

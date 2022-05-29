@@ -1,0 +1,15 @@
+
+python main.py --experiment OSLWL/OSLWL_VAL_SET --path_cslr '/home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace' --path_islr '/home/temporal2/mvazquez/Challenge/baseline/ISLR_workspace'
+
+
+
+cd /home/temporal2/mvazquez/Challenge/baseline/ISLR_workspace/preprocessing
+python preprocess_video_playlist.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/OSLWL/OSLWL_VAL_SET/video --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/A1_preprocessing_videos --method CENTERED_CUT --resolution 512x512
+cd /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/src
+python preparate_elan_files.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/OSLWL/OSLWL_VAL_SET/eaf --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/A1_preprocessing_videos --labels ../data/OSLWL_VAL_SET_LABELS.txt
+cd /home/temporal2/mvazquez/Challenge/baseline/ISLR_workspace/preprocessing
+python generate_kps.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/A1_preprocessing_videos --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/A2_features/npy/kps
+python generate_features.py --folder /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/A2_features/npy --type_kps C3_xyz --noframeslimit True
+cd /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/src
+python generate_Windows.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/A2_features/npy --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/B1_generate_windows --type_features joints_C3_xyz bones_C3_xyz  --window_size 10 --window_stride 1 
+python generate_ISLR_output.py --input /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/B1_generate_windows --output /home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/experiments/OSLWL/EXPERIMENTO_OSLWL_VAL_SET/B2_ISLR_output --type_features joints_C3_xyz bones_C3_xyz  --labels ../data/OSLWL_VAL_SET_LABELS.txt --folder_models config/model/track1_preprocessed_train/track1_400 --batch_size 100 --device 0 --raw

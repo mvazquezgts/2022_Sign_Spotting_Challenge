@@ -1,0 +1,57 @@
+VIDEO_FOLDER: '/home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/MSSL/MSSL_TRAIN_SET/video'
+ELAN_FOLDER: '/home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/MSSL/MSSL_TRAIN_SET/eaf'
+LABEL_EXPERIMENT: 'MSSL/EXPERIMENTO_MSSL_TRAIN_SET'
+BATCH_SIZE: 100
+DEVICE_GPU: 0
+FPS: 25
+
+TYPE_KPS: 'C3_xyz'                    # C3_xyc, C3_xyz, C4_xyzc
+TYPE_FEATURES: ['joints', 'bones']    # joints, bones, joints_motion, bones_motion
+
+FOLDER_MODELS: 'config/model/track1_preprocessed_train/track1_400'
+FOLDER_FILTER_MODELS: 'config/model/track1_preprocessed_train/track1_1000'
+
+WINDOWS_SIZE: 10
+WINDOWS_STRIDE: 1
+
+# GENERATE RESULTS 1º MODEL
+THRESHOLD_POSITIVE: 0.75
+MIN_MARGIN_IS_SIGN: 4
+MIN_MARGIN_IS_SAME: 3
+
+# 2º MODEL - FILTER RESULTS
+THRESHOLD_FILTER: 0.8
+RESULT_SIZE_FIXED: 25    # 25 frames = 1000 ms
+USE_CONTEXT: True       
+
+# TRAINED_MODEL: {
+#   'joints': 'config/model/signamed/test_joint.yaml',
+#   'bones': 'config/model/signamed/test_bone.yaml',
+#   'joints_motion', 'config/signamed/test_joint.yaml',
+#   'bones_motion', 'config/signamed/test_joint.yaml'
+# }
+
+PHASES_PREPARATION: [True, True]
+# A1: python preprocess_video_playlist.py & python preparate_elan_files.py
+# A2: python generate_kps.py & python generate_features.py
+
+
+PHASES_OP1: [True, True, True, True]
+# B1: python generate_Windows.py
+# B2: python generate_ISLR_output.py
+# B3: python generate_SignSpotting_output.py
+# B4: python filter_SignSpotting_output_ISLR
+
+
+EVALUATION: True  # E1
+LABELS: '../data/track1.txt'
+VIS: False
+METRIC: True
+ELAN: False
+THRESHOLD_IOU_MIN: 0.2
+THRESHOLD_IOU_MAX: 0.8
+THRESHOLD_IOU_STEP: 0.05
+
+# E1: python generate_Evaluation.py  # option1
+
+
