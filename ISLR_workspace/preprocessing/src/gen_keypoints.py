@@ -21,11 +21,6 @@ import os, sys
 import shutil
 import datetime
 
-from preprocessing.src.pose_hrnet import get_pose_net
-from preprocessing.src.utils import pose_process, plot_pose
-from preprocessing.config import cfg
-from preprocessing.config import update_config
-
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
 
@@ -172,105 +167,7 @@ class GenKeypointsMediapipeC4():
             print ('Recortar el final, pues excede el maximo')
             output_list = output_list[0:MAX_FRAMES]
 
-        return output_list
-
-            
-
-class GenKeypointsMMpose():
-    def __init__(self, config_file, checkpoint_model, device=0):
-        #torch.cuda.set_device(device)
-        print ('init MMPose')
-        cfg.merge_from_file(config_file)
-        self.newmodel = get_pose_net(cfg, is_train=False)
-        #print(self.newmodel)
-        checkpoint = torch.load(checkpoint_model)
-        
-        state_dict = checkpoint['state_dict']
-        new_state_dict = OrderedDict()
-        for k, v in state_dict.items():
-            if 'backbone.' in k:
-                name = k[9:] # remove module.
-            if 'keypoint_head.' in k:
-                name = k[14:] # remove module.
-            new_state_dict[name] = v
-        self.newmodel.load_state_dict(new_state_dict)
-
-        self.newmodel.cuda().eval()
-        self.transform  = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
-        ])
-    
-    def norm_numpy_totensor(self, img):
-        img = img.astype(np.float32) / 255.0
-        for i in range(3):
-            img[:, :, :, i] = (img[:, :, :, i] - mean[i]) / std[i]
-        return torch.from_numpy(img).permute(0, 3, 1, 2)
-    
-    def stack_flip(self, img):
-        img_flip = cv2.flip(img, 1)
-        return np.stack([img, img_flip], axis=0)
-
-    def merge_hm(self, hms_list):
-        assert isinstance(hms_list, list)
-        for hms in hms_list:
-            hms[1,:,:,:] = torch.flip(hms[1,index_mirror,:,:], [2])
-        
-        hm = torch.cat(hms_list, dim=0)
-        hm = torch.mean(hms, dim=0)
-        return hm
-    
-    def genKeypoints(self, video_path, output_img=None):
-        
-        with torch.no_grad():
-            cap = cv2.VideoCapture(video_path)
-            frame_width = int(cap.get(3))
-            frame_height = int(cap.get(4))
-            
-            output_list = []
-
-            #idx = 0
-            while cap.isOpened():
-                success, img = cap.read()
-                if not success:
-                    break
-                frame_height, frame_width = img.shape[:2]
-                img = cv2.flip(img, flipCode=1)
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                out = []
-                for scale in multi_scales:
-                    img_temp = cv2.resize(img, (scale,scale))
-                    img_temp = self.stack_flip(img_temp)
-                    img_temp = self.norm_numpy_totensor(img_temp).cuda()
-                    hms = self.newmodel(img_temp)
-                    out.append(f.interpolate(hms, (frame_width // 4,frame_height // 4), mode='bilinear'))
-
-                out = self.merge_hm(out)
-                result = out.reshape((133,-1))
-                result = torch.argmax(result, dim=1)
-                result = result.cpu().numpy().squeeze()
-                y = result // (frame_width // 4)
-                x = result % (frame_height // 4)
-                pred = np.zeros((133, 3), dtype=np.float32)
-                pred[:, 0] = x
-                pred[:, 1] = y
-
-                hm = out.cpu().numpy().reshape((133, frame_width//4, frame_height//4))
-                pred = pose_process(pred, hm)
-                pred[:,:2] *= 4.0 
-                assert pred.shape == (133, 3)
-
-                output_list.append(pred)
-                # img = np.asarray(img)
-                # img = plot_pose(img, pred)
-                # cv2.imwrite('{}_{}.png'.format(output_img,idx), cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
-                # idx=idx+1
-            
-            output_list = np.array(output_list)
-            cap.release()
-            
-        return output_list
-            
+        return output_list    
             
 class GenKeypointsOpenpose():
     def __init__(self, gpu_id = 0 ):
