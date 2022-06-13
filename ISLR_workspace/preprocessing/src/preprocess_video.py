@@ -203,9 +203,9 @@ class PreprocessVideo():
                 print ('jump')
         
         if counter_bbox_processed < 3:   # No encontró un bbox correcto. Volver a ejecutarlo pero ahora cogiendo todos los frames para analizar el bbox.
-            print ('VOLVER A REVISAR Y PASAR POR TODOS LOS FRAMES: {}'.format(int(len(list_files)/2)))
-            for index in range(int(len(list_files)/2)):
-                fidx = list_files[index*2]
+            print ('process all frames: {}'.format(int(len(list_files))))
+            for index in range(int(len(list_files))):
+                fidx = list_files[index]
                 print (fidx)
                 filepath = os.path.join(temporal_folder, fidx)
                 try:
