@@ -15,6 +15,7 @@ def main(args):
     resolution = args.resolution
     method = args.method
     detection_iter = args.detection_iter
+    default_max_fps = 25
     
     print ('method: {}'.format(method))
     print ('resolution: {}'.format(resolution))
@@ -36,7 +37,7 @@ def main(args):
             
                 try:
                     
-                    temp_video_path = preprocessVideo.change_video_fps(input_video_path, 30) 
+                    temp_video_path = preprocessVideo.change_video_fps(input_video_path, default_max_fps) 
                     bbox = preprocessVideo.get_bbox_limit_from_video(temp_video_path)
                     preprocessVideo.execute_with_BBox(temp_video_path, out_video_path, bbox)
                     os.remove(temp_video_path)
