@@ -1,10 +1,12 @@
-VIDEO_FOLDER: '/tmp/ECCV2022_Sign_Spotting_Challenge/CSLR_workspace/SignSpotting/data/OSLWL/OSLWL_VAL_SET/video'
-ELAN_FOLDER: '/tmp/ECCV2022_Sign_Spotting_Challenge/CSLR_workspace/SignSpotting/data/OSLWL/OSLWL_VAL_SET/eaf'
+VIDEO_FOLDER: 'data/OSLWL/OSLWL_VAL_SET/video'
+ELAN_FOLDER: ''
 LABEL_EXPERIMENT: 'OSLWL/EXPERIMENTO_OSLWL_VAL_SET'
 LABEL_EXPERIMENT_QUERIES: 'OSLWL/EXPERIMENTO_OSLWL_QUERY_VAL_SET'
 BATCH_SIZE: 100
 DEVICE_GPU: 0
 FPS: 25
+
+
 
 TYPE_KPS: 'C3_xyz'                    # C3_xyc, C3_xyz, C4_xyzc
 TYPE_FEATURES: ['joints', 'bones']    # joints, bones, joints_motion, bones_motion
@@ -28,7 +30,7 @@ FOLDER_Joints_DATA_QUERY_SET: 'EXPERIMENTO_OSLWL_QUERY_VAL_SET/B2_ISLR_output_RA
 FOLDER_Bones_DATA_SET: 'EXPERIMENTO_OSLWL_VAL_SET/B2_ISLR_output_RAW/out_global_average/bones_C3_xyz'
 FOLDER_Bones_DATA_QUERY_SET: 'EXPERIMENTO_OSLWL_QUERY_VAL_SET/B2_ISLR_output_RAW/out_global_average/bones_C3_xyz'
 
-QUERY_LIMITS: '../data/clases_track2_VAL.csv'
+QUERY_LIMITS: 'data/clases_track2_VAL.csv'
 
 PHASES_OP1: [True, True, True]
 # B1: python generate_Windows.py
@@ -37,7 +39,7 @@ PHASES_OP1: [True, True, True]
 
 
 EVALUATION: False  # E1
-LABELS: '../data/OSLWL_VAL_SET_LABELS.txt'
+LABELS: 'data/OSLWL_VAL_SET_LABELS.txt'   
 VIS: False
 METRIC: True
 ELAN: False

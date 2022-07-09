@@ -1,5 +1,5 @@
-VIDEO_FOLDER: '/home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/MSSL/MSSL_TRAIN_SET/video'
-ELAN_FOLDER: '/home/temporal2/mvazquez/Challenge/baseline/CSLR_workspace/SignSpotting/data/MSSL/MSSL_TRAIN_SET/eaf'
+VIDEO_FOLDER: 'data/MSSL/MSSL_TRAIN_SET/video'
+ELAN_FOLDER: 'data/MSSL/MSSL_TRAIN_SET/eaf'
 LABEL_EXPERIMENT: 'MSSL/EXPERIMENTO_MSSL_TRAIN_SET'
 BATCH_SIZE: 100
 DEVICE_GPU: 0
@@ -44,7 +44,7 @@ PHASES_OP1: [True, True, True, True]
 
 
 EVALUATION: True  # E1
-LABELS: '../data/track1.txt'
+LABELS: 'data/track1.txt'
 VIS: False
 METRIC: True
 ELAN: False

@@ -1,5 +1,5 @@
-VIDEO_FOLDER: '/tmp/ECCV2022_Sign_Spotting_Challenge/CSLR_workspace/SignSpotting/data/TRACK2/PUBLIC/OSLWL_TEST_SET_VIDEOS'
-ELAN_FOLDER: '/tmp/ECCV2022_Sign_Spotting_Challenge/CSLR_workspace/SignSpotting/data/TRACK2/PUBLIC/OSLWL_TEST_SET/eaf'
+VIDEO_FOLDER: 'data/OSLWL/OSLWL_TEST_SET/video'
+ELAN_FOLDER: ''
 LABEL_EXPERIMENT: 'OSLWL/EXPERIMENTO_OSLWL_TEST_SET'
 LABEL_EXPERIMENT_QUERIES: 'OSLWL/EXPERIMENTO_OSLWL_QUERY_TEST_SET'
 BATCH_SIZE: 100
@@ -28,7 +28,7 @@ FOLDER_Joints_DATA_QUERY_SET: 'EXPERIMENTO_OSLWL_QUERY_TEST_SET/B2_ISLR_output_R
 FOLDER_Bones_DATA_SET: 'EXPERIMENTO_OSLWL_TEST_SET/B2_ISLR_output_RAW/out_global_average/bones_C3_xyz'
 FOLDER_Bones_DATA_QUERY_SET: 'EXPERIMENTO_OSLWL_QUERY_TEST_SET/B2_ISLR_output_RAW/out_global_average/bones_C3_xyz'
 
-QUERY_LIMITS: '../data/clases_track2_TEST.csv'
+QUERY_LIMITS: 'data/clases_track2_TEST.csv'
 
 PHASES_OP1: [True, True, True]
 # B1: python generate_Windows.py
@@ -37,7 +37,7 @@ PHASES_OP1: [True, True, True]
 
 
 EVALUATION: False  # E1
-LABELS: '../data/OSLWL_TEST_SET_LABELS.txt'
+LABELS: 'data/OSLWL_TEST_SET_LABELS.txt'
 VIS: False
 METRIC: True
 ELAN: False

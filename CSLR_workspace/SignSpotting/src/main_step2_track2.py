@@ -19,6 +19,7 @@ def main(args):
         config = yaml.load(file, Loader=yaml.FullLoader)
         print(config)
 
+    path_sign_spotting = '{}/SignSpotting'.format(args.path_cslr)
     path_experiment = '{}/SignSpotting/experiments/{}'.format(
         args.path_cslr, config['LABEL_EXPERIMENT'])
     path_experiment_queries = '{}/SignSpotting/experiments/{}'.format(
@@ -36,8 +37,8 @@ def main(args):
     print ('cd {}'.format(cmd_cd_sign_spotting))
     
     if (config['PHASES_OP1'][2]):
-        cmd = 'python detect_queries_on_videos.py --input_videos {}/B2_ISLR_output_RAW --input_queries {}/B2_ISLR_output_RAW --output {}/B2_SignSpotting_output --type_features {} --fps {} --file_query_limits {}'.format(
-            path_experiment, path_experiment_queries, path_experiment, types_features, config['FPS'], config['QUERY_LIMITS'])
+        cmd = 'python detect_queries_on_videos.py --input_videos {}/B2_ISLR_output_RAW --input_queries {}/B2_ISLR_output_RAW --output {}/B2_SignSpotting_output --type_features {} --fps {} --file_query_limits {}/{}'.format(
+            path_experiment, path_experiment_queries, path_experiment, types_features, config['FPS'], path_sign_spotting, config['QUERY_LIMITS'])
         execute_command(cmd, execute_commands)
 
 

@@ -19,6 +19,7 @@ def main(args):
         config = yaml.load(file, Loader=yaml.FullLoader)
         print(config)
 
+    path_sign_spotting = '{}/SignSpotting'.format(args.path_cslr)
     path_experiment = '{}/SignSpotting/experiments/{}'.format(
         args.path_cslr, config['LABEL_EXPERIMENT'])
     cmd_cd_islr = '{}/preprocessing'.format(args.path_islr)
@@ -33,14 +34,14 @@ def main(args):
         os.chdir(cmd_cd_islr)
         print ('cd {}'.format(cmd_cd_islr))
         
-        cmd = 'python preprocess_video_playlist.py --input {} --output {}/A1_preprocessing_videos --method CENTERED_CUT --resolution 512x512'.format(
-            config['VIDEO_FOLDER'], path_experiment)
+        cmd = 'python preprocess_video_playlist.py --input {}/{} --output {}/A1_preprocessing_videos --method CENTERED_CUT --resolution 512x512'.format(
+            path_sign_spotting, config['VIDEO_FOLDER'], path_experiment)
         execute_command(cmd, execute_commands)
 
         os.chdir(cmd_cd_sign_spotting)
         print ('cd {}'.format(cmd_cd_sign_spotting))
-        cmd = 'python preparate_elan_files.py --input {} --output {}/A1_preprocessing_videos --labels {}'.format(
-            config['ELAN_FOLDER'], path_experiment, config['LABELS'])
+        cmd = 'python preparate_elan_files.py --input {}/{} --output {}/A1_preprocessing_videos --labels {}'.format(
+            path_sign_spotting, config['ELAN_FOLDER'], path_experiment, config['LABELS'])
         execute_command(cmd, execute_commands)
 
     if (config['PHASES_PREPARATION'][1]):
@@ -91,8 +92,8 @@ def main(args):
         select_output = select_output+'--subs '
 
     if (config['EVALUATION']):
-        cmd = 'python generate_Evaluation.py --input {}/B3_SignSpotting_output --output {}/E1_evaluation_output --gt {}/A1_preprocessing_videos --labels {} --threshold_iou_min {} --threshold_iou_max {} --threshold_iou_step {} {}'.format(
-            path_experiment, path_experiment, path_experiment, config['LABELS'], config['THRESHOLD_IOU_MIN'], config['THRESHOLD_IOU_MAX'], config['THRESHOLD_IOU_STEP'], select_output)
+        cmd = 'python generate_Evaluation.py --input {}/B3_SignSpotting_output --output {}/E1_evaluation_output --gt {}/A1_preprocessing_videos --labels {}/{} --threshold_iou_min {} --threshold_iou_max {} --threshold_iou_step {} {}'.format(
+            path_experiment, path_experiment, path_experiment, path_sign_spotting, config['LABELS'], config['THRESHOLD_IOU_MIN'], config['THRESHOLD_IOU_MAX'], config['THRESHOLD_IOU_STEP'], select_output)
         execute_command(cmd, execute_commands)
 
 

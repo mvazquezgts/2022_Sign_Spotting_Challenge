@@ -19,6 +19,7 @@ def main(args):
         config = yaml.load(file, Loader=yaml.FullLoader)
         print(config)
 
+    path_sign_spotting = '{}/SignSpotting'.format(args.path_cslr)
     path_experiment = '{}/SignSpotting/experiments/{}'.format(
         args.path_cslr, config['LABEL_EXPERIMENT'])
     cmd_cd_islr = '{}/preprocessing'.format(args.path_islr)
@@ -33,15 +34,15 @@ def main(args):
         os.chdir(cmd_cd_islr)
         print ('cd {}'.format(cmd_cd_islr))
         
-        cmd = 'python preprocess_video_playlist.py --input {} --output {}/A1_preprocessing_videos --method CENTERED_CUT --resolution 512x512'.format(
-            config['VIDEO_FOLDER'], path_experiment)
+        cmd = 'python preprocess_video_playlist.py --input {}/{} --output {}/A1_preprocessing_videos --method CENTERED_CUT --resolution 512x512'.format(
+            path_sign_spotting, config['VIDEO_FOLDER'], path_experiment)
         execute_command(cmd, execute_commands)
 
-        os.chdir(cmd_cd_sign_spotting)
-        print ('cd {}'.format(cmd_cd_sign_spotting))
-        cmd = 'python preparate_elan_files.py --input {} --output {}/A1_preprocessing_videos --labels {}'.format(
-            config['ELAN_FOLDER'], path_experiment, config['LABELS'])
-        execute_command(cmd, execute_commands)
+        # os.chdir(cmd_cd_sign_spotting)
+        # print ('cd {}'.format(cmd_cd_sign_spotting))
+        # cmd = 'python preparate_elan_files.py --input {} --output {}/A1_preprocessing_videos --labels {}'.format(
+        #     config['ELAN_FOLDER'], path_experiment, config['LABELS'])
+        # execute_command(cmd, execute_commands)
 
     if (config['PHASES_PREPARATION'][1]):
         os.chdir(cmd_cd_islr)
@@ -63,8 +64,8 @@ def main(args):
         execute_command(cmd, execute_commands)
 
     if (config['PHASES_OP1'][1]):
-        cmd = 'python generate_ISLR_output.py --input {}/B1_generate_windows --output {}/B2_ISLR_output --type_features {} --labels {} --folder_models {} --batch_size {} --device {} --raw'.format(
-            path_experiment, path_experiment, types_features, config['LABELS'], config['FOLDER_MODELS'], config['BATCH_SIZE'], config['DEVICE_GPU'])
+        cmd = 'python generate_ISLR_output.py --input {}/B1_generate_windows --output {}/B2_ISLR_output --type_features {} --labels {}/{} --folder_models {} --batch_size {} --device {} --raw'.format(
+            path_experiment, path_experiment, types_features, path_sign_spotting, config['LABELS'], config['FOLDER_MODELS'], config['BATCH_SIZE'], config['DEVICE_GPU'])
         execute_command(cmd, execute_commands)
 
 
