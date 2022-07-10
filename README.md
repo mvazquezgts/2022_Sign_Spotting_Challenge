@@ -1,5 +1,4 @@
-# Pipeline
-![Alt text](Pipeline of the baseline solution for MSSL and OSLWL tracks.)
+# Pipeline of the baseline solution for MSSL and OSLWL tracks.
 <img src="./img/SignSpottingDiagram.drawio.svg">
 
 # Preparation: Main path, download code, download data.
