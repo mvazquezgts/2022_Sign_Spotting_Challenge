@@ -22,6 +22,6 @@ rm -r OSLWL/EXPERIMENTO_OSLWL_QUERY_VAL_SET.zip
 
 
 mkdir OSLWL/EXPERIMENTO_OSLWL_VAL_SET
-wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1krXt3dBSDIXMAQWmKsYlxfQp9PJoC87t' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1krXt3dBSDIXMAQWmKsYlxfQp9PJoC87t" -O MSSL/EXPERIMENTO_OSLWL_VAL_SET.zip && rm -rf /tmp/cookies.txt
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1krXt3dBSDIXMAQWmKsYlxfQp9PJoC87t' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1krXt3dBSDIXMAQWmKsYlxfQp9PJoC87t" -O OSLWL/EXPERIMENTO_OSLWL_VAL_SET.zip && rm -rf /tmp/cookies.txt
 unzip OSLWL/EXPERIMENTO_OSLWL_VAL_SET.zip -d OSLWL
 rm -r OSLWL/EXPERIMENTO_OSLWL_VAL_SET.zip
